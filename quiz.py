@@ -1,6 +1,7 @@
 import pygame
 import sys
 import random
+import pandas as pd
 
 pygame.init()
 
@@ -19,6 +20,10 @@ pygame.mixer.music.set_volume(0.3)
 pygame.mixer.music.play(-1)
 
 # Меню
+menu_background = pygame.image.load("background.jpg")
+menu_background = pygame.transform.scale(menu_background, (800, 800))
+
+# Меню
 menu_title = FONT.render("Press Enter to Start", True, "white")
 menu_title_rect = menu_title.get_rect(center=(400, 400))
 
@@ -30,10 +35,10 @@ difficulty_buttons = [
 
 selected_difficulty = None
 
-SCREEN.fill(BG_COLOUR)
+# Отображение фона меню:
+SCREEN.blit(menu_background, (0, 0))
 SCREEN.blit(menu_title, menu_title_rect)
 pygame.display.update()
-
 # Ожидание начала игры и выбора сложности
 waiting_for_start = True
 while waiting_for_start:
@@ -60,63 +65,71 @@ while waiting_for_start:
     pygame.display.update()
 
 # Генерация вопросов и ответов в зависимости от выбранной сложности
-if selected_difficulty == "Easy":
-    quiz_data = {
-        "Translate 'Cat'": "Кошка",
-        "Translate 'Dog'": "Собака",
-        "Translate 'Sun'": "Солнце",
-        "Translate 'Book'": "Книга",
-        "Translate 'Water'": "Вода",
-        "Translate 'House'": "Дом",
-        "Translate 'Friend'": "Друг",
-        "Translate 'Food'": "Еда",
-        "Translate 'Family'": "Семья",
-        "Translate 'School'": "Школа",
-        "Translate 'Car'": "Автомобиль",
-        "Translate 'Music'": "Музыка",
-        "Translate 'City'": "Город",
-        "Translate 'Tree'": "Дерево",
-        "Translate 'Time'": "Время"
-    }
-elif selected_difficulty == "Medium":
-    quiz_data = {
-        "Translate 'Computer'": "Компьютер",
-        "Translate 'Language'": "Язык",
-        "Translate 'Travel'": "Путешествие",
-        "Translate 'Health'": "Здоровье",
-        "Translate 'Work'": "Работа",
-        "Translate 'Nature'": "Природа",
-        "Translate 'Money'": "Деньги",
-        "Translate 'Sport'": "Спорт",
-        "Translate 'Art'": "Искусство",
-        "Translate 'History'": "История",
-        "Translate 'Science'": "Наука",
-        "Translate 'Film'": "Фильм",
-        "Translate 'City'": "Город",
-        "Translate 'Friend'": "Друг",
-        "Translate 'Family'": "Семья"
-    }
-else:  # Hard
-    quiz_data = {
-        "Translate 'Blockchain'": "Цепочка блоков",
-        "Translate 'Algorithm'": "Алгоритм",
-        "Translate 'Encryption'": "Шифрование",
-        "Translate 'Artificial Intelligence'": "Искусственный интеллект",
-        "Translate 'Cybersecurity'": "Кибербезопасность",
-        "Translate 'Quantum Computing'": "Квантовые вычисления",
-        "Translate 'Virtual Reality'": "Виртуальная реальность",
-        "Translate 'Biotechnology'": "Биотехнологии",
-        "Translate 'Space Exploration'": "Исследование космоса",
-        "Translate 'Nanotechnology'": "Нанотехнологии",
-        "Translate 'Renewable Energy'": "Возобновляемая энергия",
-        "Translate 'Genetic Engineering'": "Генная инженерия",
-        "Translate 'Neuroscience'": "Нейронаука",
-        "Translate 'Quantum Physics'": "Квантовая физика",
-        "Translate 'Astrophysics'": "Астрофизика"
-    }
+# if selected_difficulty == "Easy":
+#     quiz_data = {
+#         "Translate 'Cat'": "Кошка",
+#         "Translate 'Dog'": "Собака",
+#         "Translate 'Sun'": "Солнце",
+#         "Translate 'Book'": "Книга",
+#         "Translate 'Water'": "Вода",
+#         "Translate 'House'": "Дом",
+#         "Translate 'Friend'": "Друг",
+#         "Translate 'Food'": "Еда",
+#         "Translate 'Family'": "Семья",
+#         "Translate 'School'": "Школа",
+#         "Translate 'Car'": "Автомобиль",
+#         "Translate 'Music'": "Музыка",
+#         "Translate 'City'": "Город",
+#         "Translate 'Tree'": "Дерево",
+#         "Translate 'Time'": "Время"
+#     }
+# elif selected_difficulty == "Medium":
+#     quiz_data = {
+#         "Translate 'Computer'": "Компьютер",
+#         "Translate 'Language'": "Язык",
+#         "Translate 'Travel'": "Путешествие",
+#         "Translate 'Health'": "Здоровье",
+#         "Translate 'Work'": "Работа",
+#         "Translate 'Nature'": "Природа",
+#         "Translate 'Money'": "Деньги",
+#         "Translate 'Sport'": "Спорт",
+#         "Translate 'Art'": "Искусство",
+#         "Translate 'History'": "История",
+#         "Translate 'Science'": "Наука",
+#         "Translate 'Film'": "Фильм",
+#         "Translate 'City'": "Город",
+#         "Translate 'Friend'": "Друг",
+#         "Translate 'Family'": "Семья"
+#     }
+# else:  # Hard
+#     quiz_data = {
+#         "Translate 'Blockchain'": "Цепочка блоков",
+#         "Translate 'Algorithm'": "Алгоритм",
+#         "Translate 'Encryption'": "Шифрование",
+#         "Translate 'Artificial Intelligence'": "Искусственный интеллект",
+#         "Translate 'Cybersecurity'": "Кибербезопасность",
+#         "Translate 'Quantum Computing'": "Квантовые вычисления",
+#         "Translate 'Virtual Reality'": "Виртуальная реальность",
+#         "Translate 'Biotechnology'": "Биотехнологии",
+#         "Translate 'Space Exploration'": "Исследование космоса",
+#         "Translate 'Nanotechnology'": "Нанотехнологии",
+#         "Translate 'Renewable Energy'": "Возобновляемая энергия",
+#         "Translate 'Genetic Engineering'": "Генная инженерия",
+#         "Translate 'Neuroscience'": "Нейронаука",
+#         "Translate 'Quantum Physics'": "Квантовая физика",
+#         "Translate 'Astrophysics'": "Астрофизика"
+#     }
+
+# # Преобразование словаря в DataFrame
+# df = pd.DataFrame(list(quiz_data.items()), columns=["Question", "Answer"])
+# # Сохранение DataFrame в файл Excel
+# df.to_excel(f"quiz_data_{selected_difficulty}.xlsx", index=False)
+# Загрузка данных из файла Excel в DataFrame
+loaded_df = pd.read_excel(f"quiz_data_{selected_difficulty}.xlsx")
+loaded_quiz_data = dict(zip(loaded_df["Question"], loaded_df["Answer"]))
 
 # Выбор случайных вопросов и ответов
-selected_items = random.sample(list(quiz_data.items()), 5)
+selected_items = random.sample(list(loaded_quiz_data.items()), 5)
 selected_quiz_data = dict(selected_items)
 
 current_question = ""
